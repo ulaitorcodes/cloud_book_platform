@@ -65,4 +65,17 @@ class RecursiveBookSectionSerializer(serializers.ModelSerializer):
         children = BookSection.objects.filter(parent_section=obj.id)
         serializer = self.__class__(children, many=True)
         return RecursiveBookSectionSerializer(children, many=True).data
+
+
+class BookCollaboratorSerializer(serializers.ModelSerializer):
     
+    collaborators = serializers.SlugRelatedField(
+        many=True,
+        slug_field='email',
+        queryset=User.objects.all(),
+        
+    )
+
+    class Meta:
+        model = Book
+        fields = ('id', 'collaborators')
